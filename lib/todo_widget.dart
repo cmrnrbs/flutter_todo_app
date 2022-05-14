@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'models/todo.dart';
 
 import 'hero_widget.dart';
 import 'todo_detail.dart';
 
 class TodoWidget extends StatefulWidget {
-  final String heroTag;
   final int itemIndex;
   final Color itemColor;
+  final List<Todo> todos;
   const TodoWidget(
       {Key? key,
-      required this.heroTag,
       required this.itemIndex,
-      required this.itemColor})
+      required this.itemColor,
+      required this.todos})
       : super(key: key);
 
   @override
@@ -26,11 +27,19 @@ class _TodoWidgetState extends State<TodoWidget> {
       children: [
         InkWell(
           onTap: () {
+            print(widget.itemIndex);
+
             Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (_) => TodoDetail(
-                          heroTag: widget.heroTag,
+                PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 700),
+                    pageBuilder: (_, __, ___) => TodoDetail(
+                          heroTag: widget.todos[widget.itemIndex].todoHeroTag
+                                  .containerHeroTag +
+                              widget.itemIndex.toString(),
+                          todo: widget.todos[widget.itemIndex],
+                          currentPageIndex: widget.itemIndex,
+                          todoInfo: widget.todos,
                         )));
           },
           child: SizedBox(
@@ -38,7 +47,9 @@ class _TodoWidgetState extends State<TodoWidget> {
               child: Stack(
                 children: [
                   HeroWidget(
-                    tag: widget.heroTag,
+                    tag: widget.todos[widget.itemIndex].todoHeroTag
+                            .containerHeroTag +
+                        widget.itemIndex.toString(),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
@@ -47,20 +58,68 @@ class _TodoWidgetState extends State<TodoWidget> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 40, 0, 0),
-                    child: HeroWidget(
-                      tag: widget.heroTag + widget.itemIndex.toString(),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Trip to Paris',
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
+                    padding: const EdgeInsets.fromLTRB(20, 40, 0, 40),
+                    child: Column(
+                      children: [
+                        HeroWidget(
+                          tag: widget.todos[widget.itemIndex].todoHeroTag
+                                  .titleHeroTag +
+                              widget.itemIndex.toString(),
+                          child: Row(
+                            children: [
+                              Text(
+                                widget.todos[widget.itemIndex].title,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Divider(
+                          height: 1,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        HeroWidget(
+                          tag: "deneme" + widget.itemIndex.toString(),
+                          child: widget.todos[widget.itemIndex].todoSubItem![0]
+                                      .todoType ==
+                                  TodoType.isCompleted
+                              ? Text(
+                                  widget.todos[widget.itemIndex].todoSubItem![0]
+                                      .title!,
+                                  style: new TextStyle(
+                                      decoration: TextDecoration.lineThrough))
+                              : Row(
+                                  children: [
+                                    Checkbox(
+                                      value: false,
+                                      onChanged: (value) => print(value),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      side: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Deneme',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                        )
+                      ],
                     ),
                   ),
                 ],

@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'models/todo.dart';
+import 'todo_page.dart';
 
-import 'hero_widget.dart';
 import 'indicator_todo_widget.dart';
 
 class TodoDetail extends StatefulWidget {
   final String heroTag;
-  const TodoDetail({Key? key, required this.heroTag}) : super(key: key);
+  final Todo todo;
+  final int? currentPageIndex;
+  final List<Todo> todoInfo;
+  const TodoDetail(
+      {Key? key,
+      required this.heroTag,
+      required this.todo,
+      this.currentPageIndex = 0,
+      required this.todoInfo})
+      : super(key: key);
 
   @override
   State<TodoDetail> createState() => _TodoDetailState();
@@ -17,9 +27,12 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
   int prevPage = 0;
   int initialPage = 0;
 
+  bool isFirstOpen = true;
+
   @override
   void initState() {
     // TODO: implement initState
+    initialPage = widget.currentPageIndex!;
     pageController = PageController(
       initialPage: initialPage,
     );
@@ -40,6 +53,7 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
     // TODO: implement dispose
     pageController.dispose();
     scaleController.dispose();
+
     super.dispose();
   }
 
@@ -61,23 +75,23 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
                     shrinkWrap: true,
                     children: [
                       IndicatorTodoWidget(
-                        tag: 'test',
-                        itemColor: Colors.blue.shade900,
-                        index: 0,
-                        currentPage: initialPage,
-                      ),
+                          tag: 'test0',
+                          itemColor: Colors.blue.shade900,
+                          index: 0,
+                          currentPage: initialPage,
+                          isFirstOpen: isFirstOpen),
                       IndicatorTodoWidget(
-                        tag: 'test1',
-                        itemColor: Colors.red.shade900,
-                        index: 1,
-                        currentPage: initialPage,
-                      ),
+                          tag: 'test1',
+                          itemColor: Colors.red.shade900,
+                          index: 1,
+                          currentPage: initialPage,
+                          isFirstOpen: isFirstOpen),
                       IndicatorTodoWidget(
-                        tag: 'test2',
-                        itemColor: Colors.yellow.shade900,
-                        index: 2,
-                        currentPage: initialPage,
-                      ),
+                          tag: 'test2',
+                          itemColor: Colors.yellow.shade900,
+                          index: 2,
+                          currentPage: initialPage,
+                          isFirstOpen: isFirstOpen),
                     ],
                   ),
                 ),
@@ -123,82 +137,25 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
             ),
             Padding(
                 padding: const EdgeInsets.only(left: 20, top: 60.0),
-                child: PageView(
-                  controller: pageController,
-                  onPageChanged: (value) {
-                    setState(() {
-                      initialPage = value;
-                    });
-                  },
-                  children: [
-                    Container(
-                      color: Colors.blue.shade900,
-                      child: Stack(
-                        children: [
-                          Column(
-                            children: [
-                              HeroWidget(
-                                tag: 'test0',
-                                child: Text(
-                                  'Trip to Paris',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 36,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      color: Colors.red.shade900,
-                    ),
-                    Container(
-                      color: Colors.yellow.shade900,
-                    )
-                  ],
-                ))
+                child: PageView.builder(
+                    itemBuilder: (context, index) {
+                      return TodoPage(
+                        index: index,
+                        currentPage: initialPage,
+                        todo: widget.todoInfo[index],
+                      );
+                    },
+                    itemCount: widget.todoInfo.length,
+                    controller: pageController,
+                    onPageChanged: (value) {
+                      setState(() {
+                        initialPage = value;
+                        isFirstOpen = false;
+                      });
+                    }))
           ],
         ),
       ),
-    );
-  }
-}
-
-class TodoPage extends StatelessWidget {
-  const TodoPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        HeroWidget(
-          tag: 'test0',
-          child: SizedBox.expand(
-            child: Text(
-              'Trip to Paris',
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 120.0),
-          child: Column(
-            children: [
-              const Divider(
-                height: 1,
-                color: Colors.black,
-              ),
-              Expanded(child: Container()),
-            ],
-          ),
-        )
-      ],
     );
   }
 }

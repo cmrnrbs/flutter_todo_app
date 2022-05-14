@@ -8,12 +8,14 @@ class IndicatorTodoWidget extends StatefulWidget {
   Color itemColor;
   int index;
   int currentPage;
+  bool isFirstOpen;
   IndicatorTodoWidget(
       {Key? key,
       required this.tag,
       required this.itemColor,
       required this.index,
-      required this.currentPage})
+      required this.currentPage,
+      required this.isFirstOpen})
       : super(key: key);
 
   @override
@@ -47,10 +49,12 @@ class _IndicatorTodoWidgetState extends State<IndicatorTodoWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (widget.index == widget.currentPage) {
-      sizeController.forward();
-    } else {
-      sizeController.reverse();
+    if (!widget.isFirstOpen) {
+      if (widget.index == widget.currentPage) {
+        sizeController.forward();
+      } else {
+        sizeController.reverse();
+      }
     }
 
     return Row(
@@ -60,9 +64,13 @@ class _IndicatorTodoWidgetState extends State<IndicatorTodoWidget>
             tag: widget.tag,
             child: Column(
               children: [
-                SizedBox(
-                  height: 10 - sizeController.value,
-                ),
+                widget.isFirstOpen
+                    ? SizedBox(
+                        height: widget.index != widget.currentPage ? 10 : 0,
+                      )
+                    : SizedBox(
+                        height: 10 - sizeController.value,
+                      ),
                 Expanded(
                   child: Container(
                     width: 6,
