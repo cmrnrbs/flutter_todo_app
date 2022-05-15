@@ -27,7 +27,7 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
 
     sizeController = AnimationController(
         vsync: this,
-        lowerBound: 40.0,
+        lowerBound: 80.0,
         upperBound: 400.0,
         duration: const Duration(milliseconds: 700));
     sizeController.addListener(() {
@@ -45,9 +45,9 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.index == 0) {
-      sizeController.forward();
-    }
+    // if (widget.index == 0) {
+    sizeController.forward();
+    //}
     return Stack(
       children: [
         Column(
@@ -67,17 +67,82 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Divider(
               height: 1,
-              thickness: 2,
+              thickness: 1,
               indent: 400 - sizeController.value,
             ),
-            SizedBox(
-              height: 20,
-            ),
+            Expanded(
+              child: SizedBox(
+                child: ListView.builder(
+                  itemCount: widget.todo.todoSubItem!.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      height: 72,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            HeroWidget(
+                              tag: widget.todo.todoHeroTag.itemHeroTag +
+                                  "_" +
+                                  widget.index.toString() +
+                                  "_" +
+                                  index.toString(),
+                              child: widget.todo.todoSubItem![index].todoType ==
+                                      TodoType.isCompleted
+                                  ? Text(widget.todo.todoSubItem![index].title!,
+                                      style: const TextStyle(
+                                          height: 1.8,
+                                          color: Colors.red,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          decoration:
+                                              TextDecoration.lineThrough))
+                                  : Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 18,
+                                          child: Checkbox(
+                                            value: false,
+                                            onChanged: (value) => print(value),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(4)),
+                                            side: const BorderSide(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 12,
+                                        ),
+                                        Text(
+                                          widget
+                                              .todo.todoSubItem![index].title!,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            )
           ],
         )
       ],

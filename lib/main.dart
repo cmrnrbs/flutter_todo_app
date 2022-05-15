@@ -41,10 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
               titleHeroTag: 'title',
               itemHeroTag: 'item'),
           todoSubItem: [
-            TodoSubItem(todoType: TodoType.isCompleted, title: 'Deneme'),
-            TodoSubItem(todoType: TodoType.isCompleted, title: 'Deneme'),
-            TodoSubItem(todoType: TodoType.isReady, title: 'Deneme'),
-            TodoSubItem(todoType: TodoType.isReady, title: 'Deneme'),
+            TodoSubItem(todoType: TodoType.isCompleted, title: 'Book flights'),
+            TodoSubItem(
+                todoType: TodoType.isCompleted, title: 'Passport check'),
+            TodoSubItem(todoType: TodoType.isReady, title: 'Packing luggaasd'),
+            TodoSubItem(todoType: TodoType.isReady, title: 'Hotel reservation'),
           ]));
     }
 
@@ -57,6 +58,73 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: const ExtrementalNavigationBar(),
       body: Column(
         children: [
+          const Spacer(),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const Expanded(
+                child: Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Colors.black,
+                  endIndent: 20,
+                ),
+              ),
+              Expanded(
+                  child: Center(
+                child: RichText(
+                  text: const TextSpan(
+                      text: 'Tasks',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: ' Lists',
+                          style: TextStyle(
+                              color: Colors.black38,
+                              fontSize: 24,
+                              fontWeight: FontWeight.normal),
+                        )
+                      ]),
+                ),
+              )),
+              const Expanded(
+                child: Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Colors.black,
+                  indent: 20,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 60,
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                child: Center(
+                  child: Icon(Icons.add),
+                ),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black12),
+                    borderRadius: BorderRadius.circular(6)),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                'Add List',
+                style: TextStyle(color: Colors.black54, fontSize: 14),
+              )
+            ],
+          ),
           const Spacer(),
           SizedBox(
             height: 260,

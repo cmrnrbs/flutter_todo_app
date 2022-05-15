@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import 'gradient_divider.dart';
 
 class ExtrementalNavigationBar extends StatelessWidget {
@@ -12,11 +12,10 @@ class ExtrementalNavigationBar extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-              child: Container(
+              child: SizedBox(
             child: Center(
-              child: Icon(
-                Icons.home_filled,
-                size: 22,
+              child: SvgPicture.asset(
+                'assets/home.svg',
                 color: Colors.black54,
               ),
             ),
@@ -38,9 +37,8 @@ class ExtrementalNavigationBar extends StatelessWidget {
               child: Container(
             width: 100,
             child: Center(
-              child: Icon(
-                Icons.calendar_today_outlined,
-                size: 22,
+              child: SvgPicture.asset(
+                'assets/calendar.svg',
                 color: Colors.black54,
               ),
             ),
@@ -61,9 +59,8 @@ class ExtrementalNavigationBar extends StatelessWidget {
               child: Container(
             width: 100,
             child: Center(
-              child: Icon(
-                Icons.menu_rounded,
-                size: 24,
+              child: SvgPicture.asset(
+                'assets/category.svg',
                 color: Colors.black54,
               ),
             ),

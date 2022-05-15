@@ -27,6 +27,7 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
   int prevPage = 0;
   int initialPage = 0;
 
+  bool isClickPop = false;
   bool isFirstOpen = true;
 
   @override
@@ -43,6 +44,13 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
         duration: const Duration(milliseconds: 400));
     scaleController.addListener(() {
       setState(() {});
+    });
+    scaleController.addStatusListener((status) {
+      if (status == AnimationStatus.reverse) {
+        if (isClickPop) {
+          Navigator.pop(context);
+        }
+      }
     });
     scaleController.forward();
     super.initState();
@@ -70,29 +78,18 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
               Expanded(
                 child: SizedBox(
                   height: 30,
-                  child: ListView(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => IndicatorTodoWidget(
+                        tag: widget
+                                .todoInfo[index].todoHeroTag.containerHeroTag +
+                            index.toString(),
+                        itemColor: widget.todoInfo[index].itemColor,
+                        index: index,
+                        currentPage: initialPage,
+                        isFirstOpen: isFirstOpen),
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
-                    children: [
-                      IndicatorTodoWidget(
-                          tag: 'test0',
-                          itemColor: Colors.blue.shade900,
-                          index: 0,
-                          currentPage: initialPage,
-                          isFirstOpen: isFirstOpen),
-                      IndicatorTodoWidget(
-                          tag: 'test1',
-                          itemColor: Colors.red.shade900,
-                          index: 1,
-                          currentPage: initialPage,
-                          isFirstOpen: isFirstOpen),
-                      IndicatorTodoWidget(
-                          tag: 'test2',
-                          itemColor: Colors.yellow.shade900,
-                          index: 2,
-                          currentPage: initialPage,
-                          isFirstOpen: isFirstOpen),
-                    ],
+                    itemCount: widget.todoInfo.length,
                   ),
                 ),
               ),
@@ -124,19 +121,27 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
               child: Transform.scale(
                 scale: scaleController.value,
                 child: InkWell(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    setState(() {
+                      isClickPop = true;
+                    });
+                    scaleController.reverse();
+                  },
                   child: const SizedBox(
                     width: 50,
                     height: 50,
                     child: Center(
-                      child: Icon(Icons.close),
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
             Padding(
-                padding: const EdgeInsets.only(left: 20, top: 60.0),
+                padding: const EdgeInsets.only(left: 60, top: 60.0),
                 child: PageView.builder(
                     itemBuilder: (context, index) {
                       return TodoPage(

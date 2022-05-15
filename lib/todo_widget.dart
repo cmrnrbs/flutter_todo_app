@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'models/todo.dart';
 
@@ -87,38 +89,71 @@ class _TodoWidgetState extends State<TodoWidget> {
                         const SizedBox(
                           height: 10,
                         ),
-                        HeroWidget(
-                          tag: "deneme" + widget.itemIndex.toString(),
-                          child: widget.todos[widget.itemIndex].todoSubItem![0]
-                                      .todoType ==
-                                  TodoType.isCompleted
-                              ? Text(
-                                  widget.todos[widget.itemIndex].todoSubItem![0]
-                                      .title!,
-                                  style: new TextStyle(
-                                      decoration: TextDecoration.lineThrough))
-                              : Row(
-                                  children: [
-                                    Checkbox(
-                                      value: false,
-                                      onChanged: (value) => print(value),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4)),
-                                      side: BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Deneme',
+                        //TODO: item_0_0 item_0_1 şeklinde çoçukları sıralıcaz
+                        Expanded(
+                            child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            var todoItem = widget.todos[widget.itemIndex];
+                            return HeroWidget(
+                              tag: todoItem.todoHeroTag.itemHeroTag +
+                                  "_" +
+                                  widget.itemIndex.toString() +
+                                  "_" +
+                                  index.toString(),
+                              child: todoItem.todoSubItem![index].todoType ==
+                                      TodoType.isCompleted
+                                  ? Text(todoItem.todoSubItem![index].title!,
                                       style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                        )
+                                          color: Colors.white38,
+                                          fontSize: 13,
+                                          height: 1.8,
+                                          decoration:
+                                              TextDecoration.lineThrough))
+                                  : Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 18,
+                                          height: 24,
+                                          child: Transform.scale(
+                                            scale: 0.7,
+                                            child: Checkbox(
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              value: false,
+                                              onChanged: (value) => null,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4)),
+                                              side: const BorderSide(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 6,
+                                        ),
+                                        Text(
+                                          todoItem.todoSubItem != null
+                                              ? todoItem
+                                                  .todoSubItem![index].title!
+                                              : "",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                            );
+                          },
+                          itemCount: widget
+                              .todos[widget.itemIndex].todoSubItem!.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(0),
+                        ))
                       ],
                     ),
                   ),
