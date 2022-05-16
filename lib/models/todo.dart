@@ -17,12 +17,16 @@ class Todo {
 class TodoSubItem {
   TodoType todoType;
   String? title;
-  TodoSubItem({required this.todoType, this.title});
+  String createdDate;
+  TodoSubItem({required this.todoType, this.title, required this.createdDate});
 }
 
 class TodoHeroTag {
   String containerHeroTag;
   String titleHeroTag;
   String itemHeroTag;
-  TodoHeroTag({required this.containerHeroTag,required this.titleHeroTag, required this.itemHeroTag});
+  TodoHeroTag(
+      {required this.containerHeroTag,
+      required this.titleHeroTag,
+      required this.itemHeroTag});
 }

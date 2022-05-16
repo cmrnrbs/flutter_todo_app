@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'models/todo.dart';
 import 'todo_page.dart';
 
@@ -117,31 +118,46 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
         child: Stack(
           children: [
             Align(
-              alignment: Alignment.topRight,
-              child: Transform.scale(
-                scale: scaleController.value,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      isClickPop = true;
-                    });
-                    scaleController.reverse();
-                  },
-                  child: const SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: Center(
-                      child: Icon(
-                        Icons.close,
-                        size: 30,
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 60.0),
+                      child: SvgPicture.asset(
+                        'assets/document.svg',
+                        width: 30,
                       ),
                     ),
-                  ),
+                    Transform.scale(
+                      scale: scaleController.value,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            isClickPop = true;
+                          });
+                          scaleController.reverse();
+                        },
+                        child: const SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Center(
+                            child: Icon(
+                              Icons.close,
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
             Padding(
-                padding: const EdgeInsets.only(left: 60, top: 60.0),
+                padding: const EdgeInsets.only(left: 0, top: 80.0),
                 child: PageView.builder(
                     itemBuilder: (context, index) {
                       return TodoPage(

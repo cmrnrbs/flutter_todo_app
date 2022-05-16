@@ -20,6 +20,7 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
   late AnimationController sizeController;
+  var _visible = false;
 
   @override
   void initState() {
@@ -27,11 +28,18 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
 
     sizeController = AnimationController(
         vsync: this,
-        lowerBound: 80.0,
-        upperBound: 400.0,
+        lowerBound: 60.0,
+        upperBound: 340.0,
         duration: const Duration(milliseconds: 700));
     sizeController.addListener(() {
       setState(() {});
+    });
+    sizeController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _visible = true;
+        });
+      }
     });
     super.initState();
   }
@@ -52,20 +60,23 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
       children: [
         Column(
           children: [
-            HeroWidget(
-              tag: widget.todo.todoHeroTag.titleHeroTag +
-                  widget.index.toString(),
-              child: Row(
-                children: [
-                  Text(
+            Row(
+              children: [
+                const SizedBox(
+                  width: 60,
+                ),
+                HeroWidget(
+                  tag: widget.todo.todoHeroTag.titleHeroTag +
+                      widget.index.toString(),
+                  child: Text(
                     widget.todo.title,
                     style: const TextStyle(
                         color: Colors.black,
                         fontSize: 36,
                         fontWeight: FontWeight.bold),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 20,
@@ -81,7 +92,12 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                   itemCount: widget.todo.todoSubItem!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return SizedBox(
+                    return Container(
+                      padding: const EdgeInsets.only(left: 60.0),
+                      color: widget.todo.todoSubItem![index].todoType ==
+                              TodoType.isCompleted
+                          ? const Color(0xffF3F3F7)
+                          : Colors.transparent,
                       height: 72,
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -109,6 +125,7 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                                       children: [
                                         SizedBox(
                                           width: 18,
+                                          height: 18,
                                           child: Checkbox(
                                             value: false,
                                             onChanged: (value) => print(value),
@@ -116,7 +133,7 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                                                 borderRadius:
                                                     BorderRadius.circular(4)),
                                             side: const BorderSide(
-                                              color: Colors.black,
+                                              color: Colors.black45,
                                             ),
                                           ),
                                         ),
@@ -135,6 +152,17 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                                       ],
                                     ),
                             ),
+                            AnimatedOpacity(
+                              opacity: _visible ? 1.0 : 0.0,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  widget.todo.todoSubItem![index].createdDate,
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                              duration: const Duration(milliseconds: 700),
+                            )
                           ],
                         ),
                       ),

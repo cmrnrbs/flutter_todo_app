@@ -134,22 +134,30 @@ class _TodoWidgetState extends State<TodoWidget> {
                                         const SizedBox(
                                           width: 6,
                                         ),
-                                        Text(
-                                          todoItem.todoSubItem != null
-                                              ? todoItem
-                                                  .todoSubItem![index].title!
-                                              : "",
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 13,
+                                        SizedBox(
+                                          width: 116,
+                                          child: Text(
+                                            todoItem.todoSubItem != null
+                                                ? todoItem
+                                                    .todoSubItem![index].title!
+                                                : "",
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13,
+                                                overflow:
+                                                    TextOverflow.ellipsis),
                                           ),
                                         )
                                       ],
                                     ),
                             );
                           },
-                          itemCount: widget
-                              .todos[widget.itemIndex].todoSubItem!.length,
+                          itemCount: widget.todos[widget.itemIndex].todoSubItem!
+                                      .length >
+                                  4
+                              ? 4
+                              : widget
+                                  .todos[widget.itemIndex].todoSubItem!.length,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: const EdgeInsets.all(0),

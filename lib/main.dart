@@ -26,28 +26,105 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
 
-    for (var i = 0; i < 3; i++) {
-      Color itemColor = i == 0
-          ? Colors.blue.shade900
-          : (i == 1)
-              ? Colors.red.shade900
-              : Colors.yellow.shade900;
+    todoItems.add(Todo(
+        title: 'Trip to Paris',
+        itemColor: Colors.blue.shade900,
+        todoHeroTag: TodoHeroTag(
+            containerHeroTag: 'todo',
+            titleHeroTag: 'title',
+            itemHeroTag: 'item'),
+        todoSubItem: [
+          TodoSubItem(
+            todoType: TodoType.isCompleted,
+            title: 'Book flights',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isCompleted,
+            title: 'Passport check',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isReady,
+            title: 'Packing luggaasd',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isReady,
+            title: 'Hotel reservation',
+            createdDate: "Mon, Apr 30",
+          ),
+        ]));
 
-      todoItems.add(Todo(
-          title: 'Title' + i.toString(),
-          itemColor: itemColor,
-          todoHeroTag: TodoHeroTag(
-              containerHeroTag: 'test',
-              titleHeroTag: 'title',
-              itemHeroTag: 'item'),
-          todoSubItem: [
-            TodoSubItem(todoType: TodoType.isCompleted, title: 'Book flights'),
-            TodoSubItem(
-                todoType: TodoType.isCompleted, title: 'Passport check'),
-            TodoSubItem(todoType: TodoType.isReady, title: 'Packing luggaasd'),
-            TodoSubItem(todoType: TodoType.isReady, title: 'Hotel reservation'),
-          ]));
-    }
+    todoItems.add(Todo(
+        title: 'My Tasks',
+        itemColor: Colors.yellow.shade900,
+        todoHeroTag: TodoHeroTag(
+            containerHeroTag: 'todo',
+            titleHeroTag: 'title',
+            itemHeroTag: 'item'),
+        todoSubItem: [
+          TodoSubItem(
+            todoType: TodoType.isCompleted,
+            title: 'Book flights',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isCompleted,
+            title: 'Passport check',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isReady,
+            title: 'Packing luggaasd',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isReady,
+            title: 'Hotel reservation',
+            createdDate: "Mon, Apr 30",
+          ),
+        ]));
+
+    todoItems.add(Todo(
+        title: 'On Monday',
+        itemColor: Colors.red.shade900,
+        todoHeroTag: TodoHeroTag(
+            containerHeroTag: 'todo',
+            titleHeroTag: 'title',
+            itemHeroTag: 'item'),
+        todoSubItem: [
+          TodoSubItem(
+            todoType: TodoType.isReady,
+            title: 'Buy milk',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isReady,
+            title: 'Plan weekend outing',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isCompleted,
+            title: 'Publish Friday blog post',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isReady,
+            title: 'Run 3 miles',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isCompleted,
+            title: 'Wash clothes',
+            createdDate: "Mon, Apr 30",
+          ),
+          TodoSubItem(
+            todoType: TodoType.isReady,
+            title: 'Update Database',
+            createdDate: "Mon, Apr 30",
+          ),
+        ]));
 
     super.initState();
   }
