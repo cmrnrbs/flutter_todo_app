@@ -96,12 +96,13 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
               ),
               Transform.scale(
                 scale: scaleController.value,
-                child: Container(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 400),
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Colors.red),
+                      color: widget.todoInfo[initialPage].itemColor),
                   child: const Center(
                     child: Icon(
                       Icons.add_outlined,

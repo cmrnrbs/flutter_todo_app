@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'extramental_navigation_bar.dart';
 
 import 'models/todo.dart';
@@ -135,6 +137,19 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: const ExtrementalNavigationBar(),
       body: Column(
         children: [
+          const SizedBox(
+            height: 54,
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 60.0),
+              child: SvgPicture.asset(
+                'assets/document.svg',
+                width: 30,
+              ),
+            ),
+          ),
           const Spacer(),
           Row(
             mainAxisSize: MainAxisSize.max,
@@ -150,16 +165,16 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                   child: Center(
                 child: RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                       text: 'Tasks',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 24,
                           fontWeight: FontWeight.bold),
                       children: <TextSpan>[
                         TextSpan(
                           text: ' Lists',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black38,
                               fontSize: 24,
                               fontWeight: FontWeight.normal),
@@ -196,9 +211,9 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 20,
               ),
-              const Text(
+              Text(
                 'Add List',
-                style: TextStyle(color: Colors.black54, fontSize: 14),
+                style: GoogleFonts.poppins(color: Colors.black54, fontSize: 14),
               )
             ],
           ),

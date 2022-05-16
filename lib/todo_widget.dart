@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'models/todo.dart';
 
 import 'hero_widget.dart';
@@ -102,11 +103,15 @@ class _TodoWidgetState extends State<TodoWidget> {
                                   index.toString(),
                               child: todoItem.todoSubItem![index].todoType ==
                                       TodoType.isCompleted
-                                  ? Text(todoItem.todoSubItem![index].title!,
-                                      style: const TextStyle(
+                                  ? Text(
+                                      "        " +
+                                          todoItem.todoSubItem![index].title!,
+                                      maxLines: 1,
+                                      style: GoogleFonts.poppins(
                                           color: Colors.white38,
                                           fontSize: 13,
                                           height: 1.8,
+                                          decorationThickness: 1.4,
                                           decoration:
                                               TextDecoration.lineThrough))
                                   : Row(
@@ -137,16 +142,17 @@ class _TodoWidgetState extends State<TodoWidget> {
                                         SizedBox(
                                           width: 116,
                                           child: Text(
-                                            todoItem.todoSubItem != null
-                                                ? todoItem
-                                                    .todoSubItem![index].title!
-                                                : "",
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 13,
-                                                overflow:
-                                                    TextOverflow.ellipsis),
-                                          ),
+                                              todoItem.todoSubItem != null
+                                                  ? todoItem.todoSubItem![index]
+                                                      .title!
+                                                  : "",
+                                              maxLines: 1,
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontSize: 13,
+                                                  textStyle: TextStyle(
+                                                      overflow: TextOverflow
+                                                          .ellipsis))),
                                         )
                                       ],
                                     ),

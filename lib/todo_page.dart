@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'hero_widget.dart';
 import 'models/todo.dart';
@@ -70,7 +71,7 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                       widget.index.toString(),
                   child: Text(
                     widget.todo.title,
-                    style: const TextStyle(
+                    style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontSize: 36,
                         fontWeight: FontWeight.bold),
@@ -113,12 +114,16 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                                   index.toString(),
                               child: widget.todo.todoSubItem![index].todoType ==
                                       TodoType.isCompleted
-                                  ? Text(widget.todo.todoSubItem![index].title!,
-                                      style: const TextStyle(
+                                  ? Text(
+                                      "        " +
+                                          widget
+                                              .todo.todoSubItem![index].title!,
+                                      style: GoogleFonts.poppins(
                                           height: 1.8,
                                           color: Colors.red,
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
+                                          decorationThickness: 1.4,
                                           decoration:
                                               TextDecoration.lineThrough))
                                   : Row(
@@ -141,14 +146,13 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                                           width: 12,
                                         ),
                                         Text(
-                                          widget
-                                              .todo.todoSubItem![index].title!,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                          ),
-                                        )
+                                            widget.todo.todoSubItem![index]
+                                                .title!,
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ))
                                       ],
                                     ),
                             ),
@@ -158,7 +162,8 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                                 padding: EdgeInsets.only(top: 8.0),
                                 child: Text(
                                   widget.todo.todoSubItem![index].createdDate,
-                                  style: TextStyle(color: Colors.grey),
+                                  style:
+                                      GoogleFonts.poppins(color: Colors.grey),
                                 ),
                               ),
                               duration: const Duration(milliseconds: 700),
