@@ -109,20 +109,21 @@ class _AddSubTaskModalState extends State<AddSubTaskModal> {
               height: 1,
               color: Colors.grey.shade400,
             ),
-            const Spacer(),
-            Center(
+            Align(
+                alignment: Alignment.centerRight,
                 child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       primary: Colors.white,
-                      backgroundColor: Colors.white,
-                      side: BorderSide(color: Colors.grey.shade400, width: 1),
+                      backgroundColor: Colors.grey.shade900,
+                      side: BorderSide(color: Colors.grey.shade900, width: 1),
                     ),
                     onPressed: () {
+                      FocusScope.of(context).unfocus();
                       Navigator.pop(context, todoSubController.subitem);
                     },
                     child: Text(
                       'Add Sub Task',
-                      style: GoogleFonts.poppins(color: Colors.grey.shade400),
+                      style: GoogleFonts.poppins(color: Colors.white),
                     )))
           ],
         ),

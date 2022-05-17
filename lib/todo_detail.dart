@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_todo_app/controllers/todo_controller.dart';
+import 'package:get/get.dart';
 import 'models/todo.dart';
 import 'todo_page.dart';
 
@@ -25,6 +27,7 @@ class TodoDetail extends StatefulWidget {
 class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
   late AnimationController scaleController;
   late PageController pageController;
+  final TodoController todoController = Get.find();
   int prevPage = 0;
   int initialPage = 0;
 
@@ -49,7 +52,7 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
     scaleController.addStatusListener((status) {
       if (status == AnimationStatus.reverse) {
         if (isClickPop) {
-          Navigator.pop(context);
+          Navigator.pop(context, todoController.todo.value);
         }
       }
     });
@@ -96,17 +99,22 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
               ),
               Transform.scale(
                 scale: scaleController.value,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 400),
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: widget.todoInfo[initialPage].itemColor),
-                  child: const Center(
-                    child: Icon(
-                      Icons.add_outlined,
-                      color: Colors.white,
+                child: InkWell(
+                  onTap: () {
+                    print('added');
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 400),
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: widget.todoInfo[initialPage].itemColor),
+                    child: const Center(
+                      child: Icon(
+                        Icons.add_outlined,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -164,7 +172,6 @@ class _TodoDetailState extends State<TodoDetail> with TickerProviderStateMixin {
                       return TodoPage(
                         index: index,
                         currentPage: initialPage,
-                        todo: widget.todoInfo[index],
                       );
                     },
                     itemCount: widget.todoInfo.length,

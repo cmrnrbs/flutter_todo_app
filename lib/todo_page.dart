@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/controllers/todo_controller.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'hero_widget.dart';
@@ -7,12 +9,7 @@ import 'models/todo.dart';
 class TodoPage extends StatefulWidget {
   int index;
   int currentPage;
-  Todo todo;
-  TodoPage(
-      {Key? key,
-      required this.index,
-      required this.currentPage,
-      required this.todo})
+  TodoPage({Key? key, required this.index, required this.currentPage})
       : super(key: key);
 
   @override
@@ -21,16 +18,17 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
   late AnimationController sizeController;
+  final TodoController todoController = Get.find();
   var _visible = false;
+  late Todo changedTodo;
 
   @override
   void initState() {
     // TODO: implement initState
-
     sizeController = AnimationController(
         vsync: this,
         lowerBound: 60.0,
-        upperBound: 340.0,
+        upperBound: Get.width - 92.0,
         duration: const Duration(milliseconds: 700));
     sizeController.addListener(() {
       setState(() {});
@@ -67,10 +65,11 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                   width: 60,
                 ),
                 HeroWidget(
-                  tag: widget.todo.todoHeroTag.titleHeroTag +
+                  tag: todoController
+                          .todoItems[widget.index].todoHeroTag.titleHeroTag +
                       widget.index.toString(),
                   child: Text(
-                    widget.todo.title,
+                    todoController.todoItems[widget.index].title,
                     style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontSize: 36,
@@ -90,12 +89,14 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
             Expanded(
               child: SizedBox(
                 child: ListView.builder(
-                  itemCount: widget.todo.todoSubItem!.length,
+                  itemCount: todoController
+                      .todoItems[widget.index].todoSubItem!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
                       padding: const EdgeInsets.only(left: 60.0),
-                      color: widget.todo.todoSubItem![index].todoType ==
+                      color: todoController.todoItems[widget.index]
+                                  .todoSubItem![index].todoType ==
                               TodoType.isCompleted
                           ? const Color(0xffF3F3F7)
                           : Colors.transparent,
@@ -107,20 +108,22 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             HeroWidget(
-                              tag: widget.todo.todoHeroTag.itemHeroTag +
+                              tag: todoController.todoItems[widget.index]
+                                      .todoHeroTag.itemHeroTag +
                                   "_" +
                                   widget.index.toString() +
                                   "_" +
                                   index.toString(),
-                              child: widget.todo.todoSubItem![index].todoType ==
+                              child: todoController.todoItems[widget.index]
+                                          .todoSubItem![index].todoType ==
                                       TodoType.isCompleted
                                   ? Text(
                                       "        " +
-                                          widget
-                                              .todo.todoSubItem![index].title!,
+                                          todoController.todoItems[widget.index]
+                                              .todoSubItem![index].title!,
                                       style: GoogleFonts.poppins(
                                           height: 1.8,
-                                          color: Colors.red,
+                                          color: const Color(0xffEF4636),
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                           decorationThickness: 1.4,
@@ -133,7 +136,13 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                                           height: 18,
                                           child: Checkbox(
                                             value: false,
-                                            onChanged: (value) => print(value),
+                                            onChanged: (value) => setState(() {
+                                              todoController
+                                                      .todoItems[widget.index]
+                                                      .todoSubItem![index]
+                                                      .todoType =
+                                                  TodoType.isCompleted;
+                                            }),
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(4)),
@@ -146,7 +155,9 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                                           width: 12,
                                         ),
                                         Text(
-                                            widget.todo.todoSubItem![index]
+                                            todoController
+                                                .todoItems[widget.index]
+                                                .todoSubItem![index]
                                                 .title!,
                                             style: GoogleFonts.poppins(
                                               color: Colors.black,
@@ -161,7 +172,8 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                               child: Padding(
                                 padding: EdgeInsets.only(top: 8.0),
                                 child: Text(
-                                  widget.todo.todoSubItem![index].createdDate!,
+                                  todoController.todoItems[widget.index]
+                                      .todoSubItem![index].createdDate!,
                                   style:
                                       GoogleFonts.poppins(color: Colors.grey),
                                 ),

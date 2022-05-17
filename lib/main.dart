@@ -14,7 +14,7 @@ import 'todo_sub_chip.dart';
 import 'todo_widget.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
     title: "Todo App",
     home: HomeScreen(),
@@ -34,8 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
   List<ColorSelection> colorSelections = [
     ColorSelection(currentColor: Colors.green.shade900, isSelected: false),
     ColorSelection(currentColor: Colors.blue.shade900, isSelected: false),
+    ColorSelection(currentColor: Colors.amber.shade900, isSelected: false),
     ColorSelection(currentColor: Colors.red.shade900, isSelected: false),
-    ColorSelection(currentColor: Colors.yellow.shade900, isSelected: false),
+    ColorSelection(currentColor: Colors.yellow.shade700, isSelected: false),
+    ColorSelection(currentColor: Colors.purple.shade900, isSelected: false),
   ];
 
   @override
@@ -118,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   setState(() {
                     todoController.newItem();
+                    todoSubController.todosubitems = [].obs;
                     todoSubController.newItem();
                   });
                   showModalBottomSheet(
@@ -161,19 +164,38 @@ class _HomeScreenState extends State<HomeScreen> {
           const Spacer(),
           SizedBox(
             height: 260,
-            child: ListView.builder(
-              padding: const EdgeInsets.only(left: 10),
-              itemBuilder: (context, index) {
-                return TodoWidget(
-                  itemIndex: index,
-                  itemColor: todoController.todoItems[index].itemColor,
-                  todos: List<Todo>.from(todoController.todoItems.value),
-                );
-              },
-              itemCount: todoController.todoItems.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-            ),
+            child: todoController.todoItems.isNotEmpty
+                ? Obx(() => ListView.builder(
+                      padding: const EdgeInsets.only(left: 10),
+                      itemBuilder: (context, index) {
+                        return TodoWidget(
+                          itemIndex: index,
+                          itemColor: todoController.todoItems[index].itemColor,
+                          todos:
+                              List<Todo>.from(todoController.todoItems.value),
+                        );
+                      },
+                      itemCount: todoController.todoItems.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                    ))
+                : Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/info.svg',
+                          width: 40,
+                          color: Colors.grey.shade400,
+                        ),
+                        Text(
+                          'No Task',
+                          style: GoogleFonts.poppins(
+                              color: Colors.grey.shade400, fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
           ),
           const SizedBox(
             height: 40,
@@ -312,9 +334,49 @@ class _AddTaskModalState extends State<AddTaskModal> {
             const SizedBox(
               height: 10,
             ),
-            Text(
-              'Sub Tasks',
-              style: GoogleFonts.poppins(color: Colors.grey.shade400),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Sub Tasks',
+                  style: GoogleFonts.poppins(color: Colors.grey.shade400),
+                ),
+                OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.white,
+                      side: BorderSide(color: Colors.grey.shade400, width: 1),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        todoSubController.newItem();
+                      });
+                      var data = await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => AddSubTaskModal());
+                      if (data != null) {
+                        setState(() {
+                          todoSubController.addSubItem(data);
+                        });
+                      }
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Colors.grey.shade400,
+                        ),
+                        Text(
+                          'Add',
+                          style:
+                              GoogleFonts.poppins(color: Colors.grey.shade400),
+                        ),
+                      ],
+                    )),
+              ],
             ),
             todoSubController.todosubitems.isNotEmpty
                 ? Wrap(
@@ -333,38 +395,13 @@ class _AddTaskModalState extends State<AddTaskModal> {
                         .toList(),
                   )
                 : const SizedBox(),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  primary: Colors.white,
-                  backgroundColor: Colors.white,
-                  side: BorderSide(color: Colors.grey.shade400, width: 1),
-                ),
-                onPressed: () async {
-                  setState(() {
-                    todoSubController.newItem();
-                  });
-                  var data = await showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) => AddSubTaskModal());
-                  if (data != null) {
-                    setState(() {
-                      todoSubController.addSubItem(data);
-                    });
-                  }
-                },
-                child: Text(
-                  'Add Sub Task',
-                  style: GoogleFonts.poppins(color: Colors.grey.shade400),
-                )),
             const Spacer(),
             Center(
                 child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       primary: Colors.white,
-                      backgroundColor: Colors.white,
-                      side: BorderSide(color: Colors.grey.shade400, width: 1),
+                      backgroundColor: Colors.grey.shade900,
+                      side: BorderSide(color: Colors.grey.shade900, width: 1),
                     ),
                     onPressed: () {
                       setState(() {
@@ -373,11 +410,12 @@ class _AddTaskModalState extends State<AddTaskModal> {
                                 todoSubController.todosubitems.value);
                         todoController.addTask(todoController.todo);
                       });
+                      FocusScope.of(context).unfocus();
                       Navigator.pop(context);
                     },
                     child: Text(
                       'Add Task',
-                      style: GoogleFonts.poppins(color: Colors.grey.shade400),
+                      style: GoogleFonts.poppins(color: Colors.white),
                     )))
           ],
         ),

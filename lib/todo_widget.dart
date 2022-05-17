@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'models/todo.dart';
 
@@ -29,21 +28,19 @@ class _TodoWidgetState extends State<TodoWidget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         InkWell(
-          onTap: () {
-            print(widget.itemIndex);
-
-            Navigator.push(
-                context,
-                PageRouteBuilder(
-                    transitionDuration: const Duration(milliseconds: 700),
-                    pageBuilder: (_, __, ___) => TodoDetail(
-                          heroTag: widget.todos[widget.itemIndex].todoHeroTag
-                                  .containerHeroTag +
-                              widget.itemIndex.toString(),
-                          todo: widget.todos[widget.itemIndex],
-                          currentPageIndex: widget.itemIndex,
-                          todoInfo: widget.todos,
-                        )));
+          onTap: () async {
+            await Get.to(
+                () => TodoDetail(
+                      heroTag: widget.todos[widget.itemIndex].todoHeroTag
+                              .containerHeroTag +
+                          widget.itemIndex.toString(),
+                      todo: widget.todos[widget.itemIndex],
+                      currentPageIndex: widget.itemIndex,
+                      todoInfo: widget.todos,
+                    ),
+                transition: Transition.fade,
+                duration: const Duration(milliseconds: 700));
+            setState(() {});
           },
           child: SizedBox(
               width: 160,
@@ -126,7 +123,7 @@ class _TodoWidgetState extends State<TodoWidget> {
                                                   MaterialTapTargetSize
                                                       .shrinkWrap,
                                               value: false,
-                                              onChanged: (value) => null,
+                                              onChanged: null,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(4)),
