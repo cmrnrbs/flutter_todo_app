@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'gradient_divider.dart';
 
-class ExtrementalNavigationBar extends StatelessWidget {
+class ExtrementalNavigationBar extends StatefulWidget {
   const ExtrementalNavigationBar({Key? key}) : super(key: key);
 
+  @override
+  State<ExtrementalNavigationBar> createState() =>
+      _ExtrementalNavigationBarState();
+}
+
+class _ExtrementalNavigationBarState extends State<ExtrementalNavigationBar> {
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,7 +19,9 @@ class ExtrementalNavigationBar extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-              child: SizedBox(
+              child: AnimatedContainer(
+            duration: const Duration(milliseconds: 400),
+            color: selectedIndex == 0 ? Colors.grey.shade100 : Colors.white,
             child: Center(
               child: SvgPicture.asset(
                 'assets/home.svg',
@@ -34,7 +43,9 @@ class ExtrementalNavigationBar extends StatelessWidget {
               ),
               color: Colors.black),
           Expanded(
-              child: Container(
+              child: AnimatedContainer(
+            duration: const Duration(milliseconds: 400),
+            color: selectedIndex == 1 ? Colors.grey.shade100 : Colors.white,
             width: 100,
             child: Center(
               child: SvgPicture.asset(
@@ -56,7 +67,9 @@ class ExtrementalNavigationBar extends StatelessWidget {
               ),
               color: Colors.black),
           Expanded(
-              child: Container(
+              child: AnimatedContainer(
+            duration: const Duration(milliseconds: 400),
+            color: selectedIndex == 2 ? Colors.grey.shade100 : Colors.white,
             width: 100,
             child: Center(
               child: SvgPicture.asset(

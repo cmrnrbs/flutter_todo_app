@@ -161,7 +161,7 @@ class _TodoPageState extends State<TodoPage> with TickerProviderStateMixin {
                               child: Padding(
                                 padding: EdgeInsets.only(top: 8.0),
                                 child: Text(
-                                  widget.todo.todoSubItem![index].createdDate,
+                                  widget.todo.todoSubItem![index].createdDate!,
                                   style:
                                       GoogleFonts.poppins(color: Colors.grey),
                                 ),

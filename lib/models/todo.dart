@@ -17,7 +17,7 @@ class Todo {
 class TodoSubItem {
   TodoType todoType;
   String? title;
-  String createdDate;
+  String? createdDate;
   TodoSubItem({required this.todoType, this.title, required this.createdDate});
 }
 
