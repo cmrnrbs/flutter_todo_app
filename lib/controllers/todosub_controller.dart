@@ -5,8 +5,15 @@ class TodoSubController extends GetxController {
   var todosubitems = [].obs;
   var subitem = TodoSubItem(todoType: TodoType.isReady, createdDate: null).obs;
 
-  addSubItem(Rx<TodoSubItem> item){
-   todosubitems.add(item.value);
+  newItem() {
+    subitem = TodoSubItem(todoType: TodoType.isReady, createdDate: null).obs;
   }
-  
+
+  addSubItem(Rx<TodoSubItem> item) {
+    todosubitems.add(item.value);
+  }
+
+  removeSubItem(TodoSubItem item) {
+    todosubitems.remove(item);
+  }
 }

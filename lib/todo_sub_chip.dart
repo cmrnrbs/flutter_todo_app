@@ -10,11 +10,13 @@ class TodoSubChip extends StatefulWidget {
   List<ColorSelection> colorSelections;
   int selectedIndex;
   TodoSubItem todoSubItem;
+  VoidCallback onPressChip;
   TodoSubChip(
       {Key? key,
       required this.colorSelections,
       this.selectedIndex = -1,
-      required this.todoSubItem})
+      required this.todoSubItem,
+      required this.onPressChip})
       : super(key: key);
 
   @override
@@ -27,9 +29,7 @@ class _TodoSubChipState extends State<TodoSubChip> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print(todoSubController.todosubitems.length);
-        todoSubController.todosubitems.remove(widget.todoSubItem);
-        print(todoSubController.todosubitems.length);
+        widget.onPressChip();
       },
       child: Chip(
           backgroundColor: widget.selectedIndex != -1
@@ -42,9 +42,16 @@ class _TodoSubChipState extends State<TodoSubChip> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  widget.todoSubItem.title!,
-                  style: GoogleFonts.poppins(fontSize: 12),
+                Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: Text(
+                    widget.todoSubItem.title!,
+                    style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: widget.selectedIndex != -1
+                            ? Colors.white
+                            : Colors.black),
+                  ),
                 ),
                 const SizedBox(
                   width: 4,
@@ -56,12 +63,14 @@ class _TodoSubChipState extends State<TodoSubChip> {
                     child: Icon(
                       Icons.close_outlined,
                       color: Colors.white,
-                      size: 18,
+                      size: 14,
                     ),
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.grey.shade400,
+                    color: widget.selectedIndex != -1
+                        ? Colors.black26
+                        : Colors.grey.shade400,
                   ),
                 )
               ],
@@ -70,4 +79,3 @@ class _TodoSubChipState extends State<TodoSubChip> {
     );
   }
 }
-

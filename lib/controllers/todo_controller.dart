@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../constants.dart';
 import '../models/todo.dart';
 
 class TodoController extends GetxController {
   var todoItems = [].obs;
+  var todo = Todo(
+      title: "",
+      itemColor: Colors.white,
+      todoHeroTag: todoHeroTag,
+      todoSubItem: []).obs;
 
-  addSubItem(int index, Rx<TodoSubItem> subitem)
-  {
+  newItem() {
+    todo = Todo(
+        title: "",
+        itemColor: Colors.white,
+        todoHeroTag: todoHeroTag,
+        todoSubItem: []).obs;
+  }
+
+  addSubItem(int index, Rx<TodoSubItem> subitem) {
     todoItems[index].todoSubItem!.add(subitem.value);
   }
 
-  addTask(Rx<Todo> data){
+  addTask(Rx<Todo> data) {
     todoItems.add(data.value);
   }
 
-  init(){
+  init() {
     todoItems.add(Todo(
         title: 'Trip to Paris',
         itemColor: Colors.blue.shade900,
-        todoHeroTag: TodoHeroTag(
-            containerHeroTag: 'todo',
-            titleHeroTag: 'title',
-            itemHeroTag: 'item'),
+        todoHeroTag: todoHeroTag,
         todoSubItem: [
           TodoSubItem(
             todoType: TodoType.isCompleted,
@@ -49,10 +59,7 @@ class TodoController extends GetxController {
     todoItems.add(Todo(
         title: 'My Tasks',
         itemColor: Colors.yellow.shade900,
-        todoHeroTag: TodoHeroTag(
-            containerHeroTag: 'todo',
-            titleHeroTag: 'title',
-            itemHeroTag: 'item'),
+        todoHeroTag: todoHeroTag,
         todoSubItem: [
           TodoSubItem(
             todoType: TodoType.isCompleted,
@@ -79,10 +86,7 @@ class TodoController extends GetxController {
     todoItems.add(Todo(
         title: 'On Monday',
         itemColor: Colors.red.shade900,
-        todoHeroTag: TodoHeroTag(
-            containerHeroTag: 'todo',
-            titleHeroTag: 'title',
-            itemHeroTag: 'item'),
+        todoHeroTag: todoHeroTag,
         todoSubItem: [
           TodoSubItem(
             todoType: TodoType.isReady,

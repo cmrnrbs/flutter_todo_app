@@ -56,7 +56,8 @@ class _AddSubTaskModalState extends State<AddSubTaskModal> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    todoSubController.subitem.value.createdDate ?? "Select task deadline",
+                    todoSubController.subitem.value.createdDate ??
+                        "Select task deadline",
                     style: GoogleFonts.poppins(),
                   ),
                   InkWell(
@@ -67,7 +68,10 @@ class _AddSubTaskModalState extends State<AddSubTaskModal> {
                                 firstDate: DateTime(2022),
                                 lastDate: DateTime(2030))
                             .then((date) {
-                            todoSubController.subitem.value.createdDate = dateFormatter(date!);
+                          setState(() {
+                            todoSubController.subitem.value.createdDate =
+                                dateFormatter(date!);
+                          });
                         });
                       },
                       child: SvgPicture.asset('assets/calendar.svg'))
@@ -88,20 +92,18 @@ class _AddSubTaskModalState extends State<AddSubTaskModal> {
               'Sub Task Title',
               style: GoogleFonts.poppins(color: Colors.grey.shade400),
             ),
-            SizedBox(
-              height: 30,
-              child: Center(
-                child: TextField(
-                  onChanged: (value) => 
-                    todoSubController.subitem.value.title = value,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                  ),
+            Center(
+              child: TextField(
+                onChanged: (value) => setState(() {
+                  todoSubController.subitem.value.title = value;
+                }),
+                maxLines: 2,
+                decoration: InputDecoration(
+                  hintText: 'Enter sub task title',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey.shade300),
+                  border: InputBorder.none,
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
             ),
             Divider(
               height: 1,
@@ -116,10 +118,7 @@ class _AddSubTaskModalState extends State<AddSubTaskModal> {
                       side: BorderSide(color: Colors.grey.shade400, width: 1),
                     ),
                     onPressed: () {
-                      setState(() {
-                        todoSubController.addSubItem(todoSubController.subitem);
-                      });
-                      Navigator.pop(context,todoSubController.subitem);
+                      Navigator.pop(context, todoSubController.subitem);
                     },
                     child: Text(
                       'Add Sub Task',
